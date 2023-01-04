@@ -1,0 +1,23 @@
+version: "2"
+
+services:
+  laravel-app:
+    image: asapdotid/php-nginx:1.0.2-test
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    networks:
+      - app-tier
+    environment:
+      - PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE}
+      - PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE}
+      - SERVICE_NGINX_CLIENT_MAX_BODY_SIZE=${SERVICE_NGINX_CLIENT_MAX_BODY_SIZE}
+      - WEB_DOCUMENT_ROOT=${WEB_DOCUMENT_ROOT}
+      - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
+    volumes:
+      - "/home/asap/Projects/wilopo/apps/office-v3-dev:/app"
+      - "./.docker/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf"
+
+networks:
+  app-tier:
+    driver: bridge
