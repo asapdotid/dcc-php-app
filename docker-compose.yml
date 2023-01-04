@@ -15,7 +15,7 @@ services:
       - WEB_DOCUMENT_ROOT=${WEB_DOCUMENT_ROOT}
       - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
     volumes:
-      - "/home/asap/Projects/wilopo/apps/office-v3-dev:/app"
+      - "/home/asap/apps/laravel-dev:/app"
       - "./.docker/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf"
 
 networks:
