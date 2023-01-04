@@ -2,7 +2,7 @@ version: "2"
 
 services:
   laravel-app:
-    image: asapdotid/php-nginx:1.0.2-test
+    image: asapdotid/php-nginx:latest
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
