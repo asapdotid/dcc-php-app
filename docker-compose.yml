@@ -1,13 +1,14 @@
 version: "2"
 
 services:
-  laravel-app:
+  project-app:
+    container_name: project-app
     image: asapdotid/php-nginx:latest
     ports:
       - "${HTTP_PORT:-80}:80"
       - "${HTTPS_PORT:-443}:443"
     networks:
-      - app-tier
+      - project-net
     environment:
       - PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE}
       - PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE}
@@ -15,9 +16,10 @@ services:
       - WEB_DOCUMENT_ROOT=${WEB_DOCUMENT_ROOT}
       - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
     volumes:
-      - "/home/asap/apps/laravel-dev:/app"
-      - "./.docker/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf"
+      - "${PROJECT_APP_DIR}:${CONTAINER_WEB_APP_DIR}"
+      - "./.docker/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf:ro"
 
 networks:
-  app-tier:
+  project-net:
+    name: project-net
     driver: bridge
