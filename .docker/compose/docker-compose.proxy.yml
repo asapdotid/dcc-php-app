@@ -18,7 +18,7 @@ services:
       - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
     volumes:
       - "${PROJECT_APP_DIR}:${CONTAINER_WEB_APP_DIR}"
-      - "./.docker/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf:ro"
+      - "../config/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf:ro"
     labels:
       - "traefik.enable=true"
       - "traefil.docker.network=staging-network"
