@@ -46,10 +46,10 @@ include .make/*.mk
 ## init
 ## init ENVS="KEY_1=value1 KEY_2=value2"
 .PHONY: init
-init: ENVS= ## Initializes the .makefile/.env file with ENV variables for make
+init: ENVS= ## Initializes the .make/.env file with ENV variables for make
 init:
-	@cp .make/.env.example .make/.env
+	@cp ./.make/.env.example ./.make/.env
 	@for variable in $(ENVS); do \
-		echo $$variable | tee -a .make/.env; \
+		echo $$variable | tee -a ./.make/.env; \
 		done
 	@echo "Please update your .make/.env file with your settings"

@@ -1,10 +1,3 @@
-# For local builds we always want to use "latest" as tag per default
-# ifeq ($(ENV),local)
-# 	TAG:=latest
-# endif
-
-TAG:=latest
-
 # Container names
 ## must match the names used in the docker-composer.yml files
 DOCKER_SERVICE_NAME_APPLICATION:=application
@@ -17,7 +10,7 @@ DOCKER_SERVICE_NAME_APPLICATION:=application
 # $(DOCKER_SERVICE_NAME)------------------^      ^        nginx
 # $(ENV)-----------------------------------------^        local
 
-DOCKER_DIR:=./.docker
+DOCKER_DIR:=./docker
 DOCKER_ENV_FILE:=$(DOCKER_DIR)/.env
 DOCKER_COMPOSE_DIR:=$(DOCKER_DIR)/compose
 DOCKER_COMPOSE_FILE:=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
@@ -63,24 +56,29 @@ endif
 ##@ [Docker]
 
 .PHONY: docker-init
-docker-init: .docker/.env ## Docker initial environment
+docker-init: docker/.env ## Docker initial environment
 docker-init:
-	@echo "Please update your .make/.env file with your settings"
+	@echo "Please update your docker/.env file with your settings"
 
 .PHONY: docker-clean
 docker-clean: ## Remove the .env file for docker
 	@rm -f $(DOCKER_ENV_FILE)
 
 .PHONY: validate-docker-variables
-validate-docker-variables: .docker/.env
-	@$(if $(TAG),,$(error TAG is undefined))
-	@$(if $(ENV),,$(error ENV is undefined))
-	@$(if $(DOCKER_REGISTRY),,$(error DOCKER_REGISTRY is undefined - Did you run make-init?))
-	@$(if $(DOCKER_NAMESPACE),,$(error DOCKER_NAMESPACE is undefined - Did you run make-init?))
-	@$(if $(DOCKER_IMAGE),,$(error DOCKER_IMAGE is undefined - Did you run make-init?))
-	@$(if $(DOCKER_IMAGE_TAG),,$(error DOCKER_IMAGE_TAG is undefined - Did you run make-init?))
+validate-docker-variables: docker/.env
+	@$(if $(APPLICATION_UID),,$(error APPLICATION_UID is undefined))
+	@$(if $(APPLICATION_UID),,$(error APPLICATION_UID is undefined))
+	@$(if $(HTTP_PORT),,$(error HTTP_PORT is undefined - Did you run make-init?))
+	@$(if $(HTTPS_PORT),,$(error HTTPS_PORT is undefined - Did you run make-init?))
+	@$(if $(PROJECT_APP_DIR),,$(error PROJECT_APP_DIR is undefined - Did you run make-init?))
+	@$(if $(WEB_DOCUMENT_ROOT),,$(error WEB_DOCUMENT_ROOT is undefined - Did you run make-init?))
+	@$(if $(WEB_ALIAS_DOMAIN),,$(error WEB_ALIAS_DOMAIN is undefined - Did you run make-init?))
+	@$(if $(PHP_POST_MAX_SIZE),,$(error PHP_POST_MAX_SIZE is undefined - Did you run make-init?))
+	@$(if $(PHP_UPLOAD_MAX_FILESIZE),,$(error PHP_UPLOAD_MAX_FILESIZE is undefined - Did you run make-init?))
+	@$(if $(SERVICE_NGINX_CLIENT_MAX_BODY_SIZE),,$(error SERVICE_NGINX_CLIENT_MAX_BODY_SIZE is undefined - Did you run make-init?))
+	@$(if $(CONTAINER_WEB_APP_DIR),,$(error CONTAINER_WEB_APP_DIR is undefined - Did you run make-init?))
 
-.docker/.env:
+docker/.env:
 	@cp $(DOCKER_ENV_FILE).example $(DOCKER_ENV_FILE)
 
 .PHONY: docker-up
