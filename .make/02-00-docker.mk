@@ -66,17 +66,12 @@ docker-clean: ## Remove the .env file for docker
 
 .PHONY: validate-docker-variables
 validate-docker-variables: docker/.env
-	@$(if $(APPLICATION_UID),,$(error APPLICATION_UID is undefined))
-	@$(if $(APPLICATION_UID),,$(error APPLICATION_UID is undefined))
-	@$(if $(HTTP_PORT),,$(error HTTP_PORT is undefined - Did you run make-init?))
-	@$(if $(HTTPS_PORT),,$(error HTTPS_PORT is undefined - Did you run make-init?))
-	@$(if $(PROJECT_APP_DIR),,$(error PROJECT_APP_DIR is undefined - Did you run make-init?))
-	@$(if $(WEB_DOCUMENT_ROOT),,$(error WEB_DOCUMENT_ROOT is undefined - Did you run make-init?))
-	@$(if $(WEB_ALIAS_DOMAIN),,$(error WEB_ALIAS_DOMAIN is undefined - Did you run make-init?))
-	@$(if $(PHP_POST_MAX_SIZE),,$(error PHP_POST_MAX_SIZE is undefined - Did you run make-init?))
-	@$(if $(PHP_UPLOAD_MAX_FILESIZE),,$(error PHP_UPLOAD_MAX_FILESIZE is undefined - Did you run make-init?))
-	@$(if $(SERVICE_NGINX_CLIENT_MAX_BODY_SIZE),,$(error SERVICE_NGINX_CLIENT_MAX_BODY_SIZE is undefined - Did you run make-init?))
-	@$(if $(CONTAINER_WEB_APP_DIR),,$(error CONTAINER_WEB_APP_DIR is undefined - Did you run make-init?))
+	@$(if $(DOCKER_REGISTRY),,$(error DOCKER_REGISTRY is undefined))
+	@$(if $(DOCKER_NAMESPACE),,$(error DOCKER_NAMESPACE is undefined))
+	@$(if $(ENV),,$(error ENV is undefined - Did you run make-init?))
+	@$(if $(DOCKER_IMAGE),,$(error DOCKER_IMAGE is undefined - Did you run make-init?))
+	@$(if $(DOCKER_IMAGE_TAG),,$(error DOCKER_IMAGE_TAG is undefined - Did you run make-init?))
+	@$(if $(APP_PROJECT),,$(error APP_PROJECT is undefined - Did you run make-init?))
 
 docker/.env:
 	@cp $(DOCKER_ENV_FILE).example $(DOCKER_ENV_FILE)
