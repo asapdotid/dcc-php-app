@@ -1,31 +1,31 @@
-version: "2"
+version: "3.7"
 
 services:
   application:
     image: ${DOCKER_NAMESPACE}/${DOCKER_IMAGE}:${DOCKER_IMAGE_TAG}
     ports:
       - "${HTTP_PORT:-80}:80"
-      - "${HTTPS_PORT:-443}:443"
+      # - "${HTTPS_PORT:-443}:443"
     networks:
-      - staging-network
+      - application-network
     environment:
       - APPLICATION_UID=${APPLICATION_UID}
       - APPLICATION_GID=${APPLICATION_GID}
       - PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE}
       - PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE}
       - SERVICE_NGINX_CLIENT_MAX_BODY_SIZE=${SERVICE_NGINX_CLIENT_MAX_BODY_SIZE}
-      - WEB_DOCUMENT_ROOT=${WEB_DOCUMENT_ROOT}
-      - WEB_ALIAS_DOMAIN=${WEB_ALIAS_DOMAIN}
+      - WEB_DOCUMENT_ROOT=${WEB_APP_DOCUMENT_ROOT}
+      - WEB_ALIAS_DOMAIN=${WEB_APP_ALIAS_DOMAIN}
     volumes:
-      - "${PROJECT_APP_DIR}:${CONTAINER_WEB_APP_DIR}"
-      - "../config/supervisor/worker.conf:/opt/docker/etc/supervisor.d/worker.conf:ro"
+      - "${PROJECT_APP_DIR}:${WEB_APP_CONTAINER_DIR}"
+      - "${SUPERVISOR_APP_DIR}/worker.conf:/opt/docker/etc/supervisor.d/worker.conf"
     labels:
       - "traefik.enable=true"
-      - "traefil.docker.network=staging-network"
-      - "traefik.http.routers.project-app.entrypoints=websecure"
-      - "traefik.http.routers.project-app.rule=Host(`${WEB_ALIAS_DOMAIN}`)"
+      - "traefil.docker.network=application-network"
+      - "traefik.http.routers.project-app.entrypoints=http"
+      - "traefik.http.routers.project-app.rule=Host(`${WEB_APP_ALIAS_DOMAIN}`)"
 
 networks:
-  staging-network:
+  application-network:
     driver: bridge
     external: true

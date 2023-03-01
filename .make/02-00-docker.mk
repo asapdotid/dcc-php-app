@@ -84,6 +84,14 @@ docker-up: validate-docker-variables ## Create and start all docker containers. 
 docker-proxy-up: validate-docker-variables ## Create and start all docker proxy containers. To create/start only a specific container, use DOCKER_SERVICE_NAME=<service>
 	$(DOCKER_COMPOSE_PROXY) up -d $(DOCKER_SERVICE_NAME)
 
+.PHONY: docker-restart
+docker-restart: validate-docker-variables ## Restart docker containers.
+	@$(DOCKER_COMPOSE) restart
+
+.PHONY: docker-proxy-restart
+docker-proxy-restart: validate-docker-variables ## Restart docker proxy containers.
+	@$(DOCKER_COMPOSE_PROXY) restart
+
 .PHONY: docker-down
 docker-down: validate-docker-variables ## Stop and remove all docker containers.
 	@$(DOCKER_COMPOSE) down
@@ -97,7 +105,7 @@ docker-config: validate-docker-variables ## List the configuration
 	@$(DOCKER_COMPOSE) config
 
 .PHONY: docker-proxy-config
-docker-proxy-config: validate-docker-variables ## List the configuration
+docker-proxy-config: validate-docker-variables ## List the proxy configuration
 	@$(DOCKER_COMPOSE_PROXY) config
 
 .PHONY: docker-network
