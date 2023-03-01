@@ -3,6 +3,23 @@
 Custom image PHP-FPM 8.1.x and Nginx 1.22 (stable) `asapdotid/php-nginx:<version>` as `compose image`.
 Base image from `Webdevops` **PHP** and **PHP-NGINX**
 
+## Docker Compose environment variables
+
+```
+HTTP_PORT=8080
+HTTPS_PORT=9443
+APPLICATION_UID=1000
+APPLICATION_GID=1000
+PHP_POST_MAX_SIZE=50M
+PHP_UPLOAD_MAX_FILESIZE=50M
+SERVICE_NGINX_CLIENT_MAX_BODY_SIZE=50M
+PROJECT_APP_DIR=/home/application/laravel
+SUPERVISOR_APP_DIR=${PWD}/docker/config/supervisor
+WEB_APP_CONTAINER_DIR=/app
+WEB_APP_DOCUMENT_ROOT=${WEB_APP_CONTAINER_DIR}/public
+WEB_APP_ALIAS_DOMAIN=app.jogjascript.com
+```
+
 ## Web environment variables
 
 | Variable                             | Description                                                 | Default                            |
